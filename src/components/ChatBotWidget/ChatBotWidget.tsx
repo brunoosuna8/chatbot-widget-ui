@@ -64,20 +64,20 @@ const ChatBotWidget = ({
       };
 
       const response = await fetch(API_URL, requestOptions);
-      const data = await response.json();
-      const botResponse = data.trim();
+      const data = await response.text();
+
 
       // Display incoming bot message
       const incomingChat = (
         <li key={Date.now()} className="chat incoming">
           <span className="material-symbols-outlined">smart_toy</span>
-          <p>{botResponse}</p>
+          <p>{data}</p>
         </li>
       );
       setMessages((prevMessages: any) => [...prevMessages, incomingChat]);
       handleNewMessage((prevMessages: any) => [
         ...prevMessages,
-        { type: "bot", text: botResponse },
+        { type: "bot", text: data },
       ]);
     } catch (error) {
       // Display error message if API request fails

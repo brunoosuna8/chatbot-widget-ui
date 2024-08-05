@@ -98,16 +98,15 @@ const ChatBotWidget = ({ chatbotName = "Chatbot", isTypingMessage = "Typing...",
                 }),
             };
             const response = yield fetch(API_URL, requestOptions);
-            const data = yield response.json();
-            const botResponse = data.trim();
+            const data = yield response.text();
             // Display incoming bot message
             const incomingChat = (React.createElement("li", { key: Date.now(), className: "chat incoming" },
                 React.createElement("span", { className: "material-symbols-outlined" }, "smart_toy"),
-                React.createElement("p", null, botResponse)));
+                React.createElement("p", null, data)));
             setMessages((prevMessages) => [...prevMessages, incomingChat]);
             handleNewMessage((prevMessages) => [
                 ...prevMessages,
-                { type: "bot", text: botResponse },
+                { type: "bot", text: data },
             ]);
         }
         catch (error) {
