@@ -1,7 +1,6 @@
 import React from 'react';
 
 interface ChatWidgetIOProps {
-    apiKey: string;
     chatbotName?: string;
     isTypingMessage?: string;
     IncommingErrMsg?: string;
@@ -11,6 +10,6 @@ interface ChatWidgetIOProps {
     conversation?: any;
     handleNewMessage?: any;
 }
-declare const ChatBotWidget: ({ apiKey, chatbotName, isTypingMessage, IncommingErrMsg, primaryColor, inputMsgPlaceholder, chatIcon, conversation, handleNewMessage, }: ChatWidgetIOProps) => React.JSX.Element;
+declare const ChatBotWidget: ({chatbotName, isTypingMessage, IncommingErrMsg, primaryColor, inputMsgPlaceholder, chatIcon, conversation, handleNewMessage, }: ChatWidgetIOProps) => React.JSX.Element;
 
 export { ChatBotWidget };
