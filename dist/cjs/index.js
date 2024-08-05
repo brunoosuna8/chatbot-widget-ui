@@ -89,10 +89,9 @@ const ChatBotWidget = ({ chatbotName = "Chatbot", isTypingMessage = "Typing...",
             const API_URL = "http://localhost:3000/chat/asst_J61j99ulib0yqEgUWzG9sLEa";
             const requestOptions = {
                 method: "POST",
-                // headers: {
-                //   "Content-Type": "application/json",
-                //   Authorization: `Bearer ${apiKey}`,
-                // },
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify({
                     message: trimmedMessage,
                     threadId: "thread_FHdudAstTaejSk7p6LjipKrR"
