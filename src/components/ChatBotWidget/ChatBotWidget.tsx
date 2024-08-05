@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./style.css"; // Import your stylesheet
 
 interface ChatWidgetIOProps {
-  apiKey: string;
+
   chatbotName?: string;
   isTypingMessage?: string;
   IncommingErrMsg?: string;
@@ -14,7 +14,6 @@ interface ChatWidgetIOProps {
 }
 
 const ChatBotWidget = ({
-  apiKey,
   chatbotName = "Chatbot",
   isTypingMessage = "Typing...",
   IncommingErrMsg = "Oops! Something went wrong. Please try again.",
@@ -52,27 +51,22 @@ const ChatBotWidget = ({
       setTyping(true);
 
       // Request to API for bot response
-      const API_URL = "https://api.openai.com/v1/chat/completions";
+      const API_URL = "http://localhost:3000/chat/asst_J61j99ulib0yqEgUWzG9sLEa";
       const requestOptions = {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
+        // headers: {
+        //   "Content-Type": "application/json",
+        //   Authorization: `Bearer ${apiKey}`,
+        // },
         body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "user",
-              content: trimmedMessage,
-            },
-          ],
+          message: trimmedMessage,
+          threadId:"thread_FHdudAstTaejSk7p6LjipKrR"
         }),
       };
 
       const response = await fetch(API_URL, requestOptions);
       const data = await response.json();
-      const botResponse = data.choices[0].message.content.trim();
+      const botResponse = data.trim();
 
       // Display incoming bot message
       const incomingChat = (
