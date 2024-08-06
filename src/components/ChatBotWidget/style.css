@@ -280,7 +280,7 @@ body.show-chatbot .chatbot {
 }
 
 .chatbot .chat-input {
-    position: absolute;
+    /*position: absolute;*/
     bottom: 0;
     width: 100%;
     display: flex;
@@ -300,10 +300,12 @@ body.show-chatbot .chatbot {
     padding: 16px 15px 16px 0;
     border-radius: 5px;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    max-height: 72px; /* Limit to 3 lines */
+    overflow-y: auto; /* Enable scrolling */
 }
 
 .chat-input span {
-    align-self: flex-end;
+    align-self: flex-start;
     height: 40px;
     line-height: 55px;
     color: #4aa017;
@@ -374,3 +376,4 @@ body.show-chatbot .chatbot {
         font-size: 1.35rem;
     }
 }
+

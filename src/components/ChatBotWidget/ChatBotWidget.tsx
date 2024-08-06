@@ -94,7 +94,8 @@ const ChatBotWidget = ({
 
   const handleInputChange = (event: any) => {
     setUserMessage(event.target.value);
-    chatInputRef.current.style.height = `${chatInputRef.current.scrollHeight}px`;
+    chatInputRef.current.style.height = "auto"; // Reset height
+    chatInputRef.current.style.height = `${Math.min(chatInputRef.current.scrollHeight, 3 * 24)}px`; // Limit to 3 lines
   };
 
   const handleKeyPress = (event: any) => {
