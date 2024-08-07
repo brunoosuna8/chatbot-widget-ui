@@ -94,8 +94,19 @@ const ChatBotWidget = ({
 
   const handleInputChange = (event: any) => {
     setUserMessage(event.target.value);
-    chatInputRef.current.style.height = "auto"; // Reset height
-    chatInputRef.current.style.height = `${Math.min(chatInputRef.current.scrollHeight, 3 * 24)}px`; // Limit to 3 lines
+    const btn = document.getElementById("send-btn");
+    if(btn) {
+      if(event.target.value.length > 0) {
+        btn.style.color = "black";
+
+      } else {
+        btn.style.color = "grey";
+
+      }
+    }
+
+    // chatInputRef.current.style.height = "auto"; // Reset height
+    // chatInputRef.current.style.height = `${Math.min(chatInputRef.current.scrollHeight, 2 * 24)}px`; // Limit to 3 lines
   };
 
   const handleKeyPress = (event: any) => {
@@ -122,7 +133,14 @@ const ChatBotWidget = ({
     // Scroll to bottom of chatbox when messages change
     chatboxRef.current.scrollTop = chatboxRef.current.scrollHeight;
   }, [messages]);
+  const handleFocus = () => {
+    chatInputRef.current.parentElement.style.border = "2px solid black";
 
+  };
+
+  const handleBlur = () => {
+    chatInputRef.current.parentElement.style.border = "none";
+  };
   return (
     <div
       className="chatbot-container"
@@ -144,7 +162,7 @@ const ChatBotWidget = ({
           <h2>{chatbotName}</h2>
           <span
             className="close-btn material-symbols-outlined"
-            onClick={toggleChatbot}
+            // onClick={toggleChatbot}
           >
             close
           </span>
@@ -167,14 +185,18 @@ const ChatBotWidget = ({
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
             maxLength={500}
+            rows={3}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
           <span
             id="send-btn"
             className="material-symbols-outlined"
             onClick={handleChat}
             style={{
-              color: primaryColor,
+              color: "grey",
             }}
+
           >
             send
           </span>
