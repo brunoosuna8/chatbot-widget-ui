@@ -1,5 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./style.css"; // Import your stylesheet
+import "./style.css";
+import {Messages} from "openai/resources/beta/threads";
+import Message = Messages.Message;
+import {isTextContentBlock} from "../../../utils/isTextContentBlock";
+import {extractImageUrls} from "../../../utils/extract-images-url";
+import {createTuples} from "../../../utils/createTuples";
+
+
 
 interface ChatWidgetIOProps {
 
@@ -51,7 +58,7 @@ const ChatBotWidget = ({
       setTyping(true);
 
       // Request to API for bot response
-      const API_URL = "http://localhost:3000/chat/asst_J61j99ulib0yqEgUWzG9sLEa";
+      const API_URL = "http://localhost:3000/chat";
       const requestOptions = {
         method: "POST",
         headers: {
@@ -64,16 +71,84 @@ const ChatBotWidget = ({
       };
 
       const response = await fetch(API_URL, requestOptions);
-      const data = await response.text();
+      const data: Message  = await response.json();
+      console.log(data);
+      let text;
+      let imagesUrl: string[] = [];
+      let incomingChat: React.JSX.Element;
+      if(isTextContentBlock(data.content[0])) {
+        text = data.content[0].text.value;
+        imagesUrl = extractImageUrls(text);
+        if(imagesUrl.length > 0) {
+          // 1. Eliminar el patrón `![...]` del texto
+          let cleanedText = text.replace(/!\[.*?\]\((.*?)\)/g, '$1');
+          // 2. Eliminar los paréntesis de las URLs
+          cleanedText = cleanedText.replace(/[()]/g, '');
+          // 3. Eliminar el patrón `【...】` del texto
+          cleanedText = cleanedText.replace(/【.*?】/g, '');
+          const tuples = createTuples(cleanedText, imagesUrl);
+          console.log(tuples);
+          incomingChat = (
+              <li key={Date.now()} className="chat incoming"
+                  style={{flexDirection:"column"}}
+              >
+                <span className="material-symbols-outlined">smart_toy</span>
+                {tuples.map((tuple: [string, string], index: number) => {
+                  return (
+                      <div
+                          key={index}
+                          className="chatbot-container"
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                      >
+                        <p style={{marginBottom:"20px"}}>{tuple[0]}</p>
+                        <img style={{marginBottom:"20px"}} width={300} alt={tuple[0]} src={tuple[1]} />
+                      </div>
+                  );
+                })}
+              </li>
+          )
 
+        }else{
+          incomingChat = (
+              <li key={Date.now()} className="chat incoming">
+                <span className="material-symbols-outlined">smart_toy</span>
+                <p>{text}</p>
+              </li>
+          );
+        }
+      } else {
+        incomingChat = (
+            <li key={Date.now()} className="chat incoming">
+            <span className="material-symbols-outlined">smart_toy</span>
+              <p>{text}</p>
+            </li>
+        );
+      }
 
       // Display incoming bot message
-      const incomingChat = (
-        <li key={Date.now()} className="chat incoming">
-          <span className="material-symbols-outlined">smart_toy</span>
-          <p>{data}</p>
-        </li>
-      );
+
+      // [
+      //   <li key={Date.now()} className="chat incoming">
+      //     <span className="material-symbols-outlined">smart_toy</span>
+      //     <p>tenemos un cafe helado</p>
+      //     <img src={"https://tb-static.uber.com/prod/image-proc/coffe.jpeg"}/>
+      //   </li>,
+      //   <li key={Date.now()} className="chat incoming">
+      //     <span className="material-symbols-outlined">smart_toy</span>
+      //     <p>Un capuccino</p>
+      //     <img src={"https://tb-static.uber.com/prod/image-proc/capuccino.jpeg"}/>
+      //
+      //   </li>,
+      //   <li key={Date.now()} className="chat incoming">
+      //     <span className="material-symbols-outlined">smart_toy</span>
+      //     <p>y un sandwich </p>
+      //     <img src={"https://tb-static.uber.com/prod/image-proc/sandiwch.jpeg"}/>
+      //
+      //   </li>
+      // ]
       setMessages((prevMessages: any) => [...prevMessages, incomingChat]);
       handleNewMessage((prevMessages: any) => [
         ...prevMessages,
