@@ -78,16 +78,6 @@ const extractImageUrls = (text) => {
     return urls;
 };
 
-// const imagesUrl = [
-//   'https://example.com/image1.jpg',
-//   'https://example.com/image2.jpg',
-//   // Agrega más URLs si es necesario
-// ];
-//
-// const text = `
-//   Este es un ejemplo de texto antes de la URL https://example.com/image1.jpg y más texto antes de la segunda URL https://example.com/image2.jpg.
-// `;
-// Función para generar el array de tuplas
 function createTuples(text, urls) {
     const tuples = [];
     let remainingText = text;
@@ -102,10 +92,8 @@ function createTuples(text, urls) {
     }
     return tuples;
 }
-// const result = createTuples(text, imagesUrl);
-// console.log(result);
 
-const ChatBotWidget = ({ chatbotName = "Chatbot", isTypingMessage = "Typing...", IncommingErrMsg = "Oops! Something went wrong. Please try again.", primaryColor = "#eb4034", inputMsgPlaceholder = "Send a Message", chatIcon = ChatIcon(), conversation, handleNewMessage, }) => {
+const ChatBotWidget = ({ assistantId, chatbotName = "Chatbot", isTypingMessage = "Typing...", IncommingErrMsg = "Oops! Something went wrong. Please try again.", primaryColor = "#eb4034", inputMsgPlaceholder = "Send a Message", chatIcon = ChatIcon(), conversation, handleNewMessage, }) => {
     const [userMessage, setUserMessage] = React.useState("");
     const [messages, setMessages] = React.useState([]);
     const [typing, setTyping] = React.useState(false);
@@ -127,7 +115,7 @@ const ChatBotWidget = ({ chatbotName = "Chatbot", isTypingMessage = "Typing...",
         try {
             setTyping(true);
             // Request to API for bot response
-            const API_URL = "http://localhost:3000/chat";
+            const API_URL = `http://localhost:3000/chat/${assistantId}`;
             const requestOptions = {
                 method: "POST",
                 headers: {
@@ -135,7 +123,7 @@ const ChatBotWidget = ({ chatbotName = "Chatbot", isTypingMessage = "Typing...",
                 },
                 body: JSON.stringify({
                     message: trimmedMessage,
-                    threadId: "thread_FHdudAstTaejSk7p6LjipKrR"
+                    // threadId:"thread_FHdudAstTaejSk7p6LjipKrR"
                 }),
             };
             const response = yield fetch(API_URL, requestOptions);

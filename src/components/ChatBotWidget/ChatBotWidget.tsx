@@ -9,7 +9,7 @@ import {createTuples} from "../../../utils/createTuples";
 
 
 interface ChatWidgetIOProps {
-
+  assistantId: string;
   chatbotName?: string;
   isTypingMessage?: string;
   IncommingErrMsg?: string;
@@ -21,6 +21,7 @@ interface ChatWidgetIOProps {
 }
 
 const ChatBotWidget = ({
+                         assistantId,
   chatbotName = "Chatbot",
   isTypingMessage = "Typing...",
   IncommingErrMsg = "Oops! Something went wrong. Please try again.",
@@ -58,7 +59,7 @@ const ChatBotWidget = ({
       setTyping(true);
 
       // Request to API for bot response
-      const API_URL = "http://localhost:3000/chat";
+      const API_URL = `http://localhost:3000/chat/${assistantId}`;
       const requestOptions = {
         method: "POST",
         headers: {
@@ -66,8 +67,9 @@ const ChatBotWidget = ({
         },
         body: JSON.stringify({
           message: trimmedMessage,
-          threadId:"thread_FHdudAstTaejSk7p6LjipKrR"
+          // threadId:"thread_FHdudAstTaejSk7p6LjipKrR"
         }),
+
       };
 
       const response = await fetch(API_URL, requestOptions);
