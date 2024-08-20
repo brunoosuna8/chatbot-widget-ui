@@ -20,8 +20,7 @@ interface ChatWidgetIOProps {
   handleNewMessage?: any;
 }
 
-const ChatBotWidget = ({
-                         assistantId,
+const ChatBotWidget = ({assistantId,
   chatbotName = "Chatbot",
   isTypingMessage = "Typing...",
   IncommingErrMsg = "Oops! Something went wrong. Please try again.",
