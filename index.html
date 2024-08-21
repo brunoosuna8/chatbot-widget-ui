@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot Widget UI</title>
+</head>
+<body>
+<div id="chatbot-container"></div>
+
+<!-- Include React and ReactDOM -->
+<script src="https://unpkg.com/react/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
+
+<!-- Include the bundled library -->
+<script src="./dist/index.umd.js"></script>
+
+<script>
+    function handleNewMessage(messages) {
+        console.log('New messages:', messages);
+    }
+    // Use the library
+    const { ChatBotWidget } = ChatbotWidget;
+    const container = document.getElementById('chatbot-container');
+    ReactDOM.render(React.createElement(ChatBotWidget, {
+        assistantId: "asst_VSitQp3mwwdCJXfDTLHiYGq3",
+        chatIcon: React.createElement('div', null, 'O'),
+        chatbotName: "Assistant",
+        isTypingMessage: "...",
+        IncommingErrMsg: "Oops! Something went wrong. Try again.",
+        primaryColor: "#000000",
+        inputMsgPlaceholder: "Send a Message",
+        handleNewMessage: handleNewMessage
+    }), container);
+</script>
+</body>
+</html>

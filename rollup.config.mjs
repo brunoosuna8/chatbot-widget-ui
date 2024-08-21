@@ -19,6 +19,15 @@ export default [
         file: packageJson.module,
         format: "esm",
       },
+      {
+        file: 'dist/index.umd.js',
+        format: "umd",
+        name: "ChatbotWidget",
+        globals: {
+          react: "React",
+          "react-dom": "ReactDOM",
+        },
+      }
     ],
     external: ["react", "react-dom"],
     plugins: [
